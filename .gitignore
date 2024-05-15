@@ -11,5 +11,5 @@ psalm.xml
 vendor
 .php-cs-fixer.cache
 .DS_Store
-tests/Datasets/input.csv
+tests/Datasets/input.txt
 tests/Datasets/result.csv

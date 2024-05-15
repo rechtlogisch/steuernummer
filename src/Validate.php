@@ -22,7 +22,6 @@ class Validate extends Common
     /** @var int[] */
     private array $summands;
 
-    /** @noinspection MagicMethodsValidityInspection @noinspection PhpMissingParentConstructorInspection */
     public function __construct(string $elsterSteuernummer, ?string $federalState = null)
     {
         $this->elsterSteuernummer = $elsterSteuernummer;
@@ -33,6 +32,8 @@ class Validate extends Common
         $this->guardBufa();
 
         $this->setValidationDetails();
+
+        parent::__construct();
     }
 
     public function run(): bool
@@ -206,7 +207,7 @@ class Validate extends Common
     }
 
     /**
-     * Named in ELSTER documentation: "Das modifizierte 11er Verfahren (Rheinland-Pfalz)"
+     * Named in ELSTER documentation: "Das modifizierte 11er-Verfahren (Rheinland-Pfalz)"
      */
     private function specialElferRPProcedure(): bool
     {

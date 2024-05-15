@@ -167,7 +167,7 @@ class Constants
 
     /**
      * BE has two factors depending on BUFA (and district)
-     * cf. sub-chapter 7.2 in https://download.elster.de/download/schnittstellen/Pruefung_der_Steuer_und_Steueridentifikatsnummer.pdf
+     * cf. subchapter 7.2 in https://download.elster.de/download/schnittstellen/Pruefung_der_Steuer_und_Steueridentifikatsnummer.pdf
      *
      * key is BUFA
      * value is either

@@ -13,7 +13,6 @@ class Normalize extends Common
 
     protected string $federalState;
 
-    /** @noinspection MagicMethodsValidityInspection @noinspection PhpMissingParentConstructorInspection */
     public function __construct(string $steuernummer, string $federalState)
     {
         $this->steuernummer = (string) preg_replace('/\D/', '', $steuernummer); // Consider only digits
@@ -21,6 +20,8 @@ class Normalize extends Common
 
         $this->guardFederalState();
         $this->guardSteuernummer();
+
+        parent::__construct();
     }
 
     private function guardSteuernummer(): void
