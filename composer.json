@@ -1,0 +1,67 @@
+{
+    "name": "rechtlogisch/steuernummer",
+    "description": "Normalize, denormalize and validate German tax numbers (Steuernummer)",
+    "keywords": [
+        "denormalize",
+        "germany",
+        "normalize",
+        "rechtlogisch",
+        "steuernummer",
+        "tax number",
+        "validate"
+    ],
+    "homepage": "https://github.com/rechtlogisch/steuernummer",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Krzysztof Tomasz Zembrowski",
+            "email": "zembrowski@users.noreply.github.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "pestphp/pest": "^2.20",
+        "pestphp/pest-plugin-type-coverage": "^2.8",
+        "phpstan/phpstan": "^1.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rechtlogisch\\Steuernummer\\": "src"
+        },
+        "files": [
+            "src/functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse",
+        "coverage": "vendor/bin/pest --coverage --min=98",
+        "format": "vendor/bin/pint",
+        "quality": [
+            "@format",
+            "@test",
+            "@analyse",
+            "@types",
+            "@coverage"
+        ],
+        "test": "vendor/bin/pest --exclude-group=manual",
+        "types": "vendor/bin/pest --type-coverage --min=100"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
