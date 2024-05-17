@@ -23,7 +23,7 @@ it('fails when steuernummer is too short', function (string $federalState) {
         ->run();
 
     expect($result->isValid())->toBeFalse()
-        ->and($result->getFirstErrorKey())->toEndWith(Exceptions\InvalidSteuernummerLength::class);
+        ->and($result->getFirstErrorKey())->toBe(Exceptions\InvalidSteuernummerLength::class);
 })->with('federal-states');
 
 it('fails when steuernummer is too long', function (string $federalState) {
@@ -31,7 +31,7 @@ it('fails when steuernummer is too long', function (string $federalState) {
         ->run();
 
     expect($result->isValid())->toBeFalse()
-        ->and($result->getFirstErrorKey())->toEndWith(Exceptions\InvalidSteuernummerLength::class);
+        ->and($result->getFirstErrorKey())->toBe(Exceptions\InvalidSteuernummerLength::class);
 })->with('federal-states');
 
 it('fails when steuernummer is too long in federal states where a 10 digit long steuernummer is being expected', function (string $federalState) {

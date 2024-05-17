@@ -36,7 +36,9 @@ it('generates a csv for comparison with eric result', function () {
         try {
             $resultValidation = (new Validate($elsterSteuernummer))
                 ->run();
-            $code = ($resultValidation) ? '0' : '610001034';
+            $code = ($resultValidation->isValid() === true)
+                ? '0'
+                : '610001034';
         } catch (Exceptions\FederalStateCouldNotBeDetermined|Exceptions\InvalidElsterSteuernummerLength) {
             $resultValidation = false;
             $code = '610001035';

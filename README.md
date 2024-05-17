@@ -34,12 +34,12 @@ or
 use Rechtlogisch\Steuernummer\Normalize;
 
 (new Normalize('21/815/08150', 'BE'))
-    ->run(); // => '1121081508150'
+    ->returnElsterSteuernummerOnly(); // => '1121081508150'
 ```
 
+Hint: you can use `run()` instead, if you want more (error) details.
+
 ### Denormalize
-
-
 
 ```php
 denormalizeSteuernummer('1121081508150'); // => '21/815/08150'
@@ -53,6 +53,8 @@ use Rechtlogisch\Steuernummer\Denormalize;
 (new Denormalize('1121081508150'))
     ->returnSteuernummerOnly(); // => '21/815/08150'
 ```
+
+Hint: you can use `run()` instead, if you want more (error) details.
 
 #### Details
 
@@ -79,18 +81,20 @@ use Rechtlogisch\Steuernummer\Denormalize;
 // ]
 ```
 
+Hint: you can use `run()` instead, if you want more (error) details.
+
 ### Validate
 
 You can validate an input in the so called [ELSTER-Steuernummerformat](https://www.elster.de/eportal/helpGlobal?themaGlobal=wo_ist_meine_steuernummer#aufbauSteuernummer) (13-digits):
 
 ```php
-validateElsterSteuernummer('1121081508150'); // => true
+isElsterSteuernummerValid('1121081508150'); // => true
 ```
 
 or by providing the so called [Bescheidformat](https://www.elster.de/eportal/helpGlobal?themaGlobal=wo_ist_meine_steuernummer#aufbauSteuernummer) (length varies) together with the federal state:
 
 ```php
-validateSteuernummer('21/815/08150', 'BE'); // => true
+isSteuernummerValid('21/815/08150', 'BE'); // => true
 ```
 
 #### Alternative
@@ -99,7 +103,8 @@ validateSteuernummer('21/815/08150', 'BE'); // => true
 use Rechtlogisch\Steuernummer\Validate;
 
 (new Validate('1121081508150'))
-    ->run(); // => true
+    ->run() // ValidationResult::class
+    ->isValid(); // => true
 ```
 
 The federal state is determined by the first digits of the ELSTER-Format, you can provide it as the second parameter to override the auto-determination:
@@ -108,8 +113,44 @@ The federal state is determined by the first digits of the ELSTER-Format, you ca
 use Rechtlogisch\Steuernummer\Validate;
 
 (new Validate('1121081508150', 'BE'))
-    ->run(); // => true
+    ->run() // ValidationResult::class
+    ->isValid(); // => true
 ```
+
+## Errors
+
+You can get a list of errors explaining why the provided input is invalid. The `run()` method on each class returns a DTO with a `getErrors()` method:
+
+### Validation errors
+```php
+use Rechtlogisch\Steuernummer\Validate;
+
+(new Validate('123456789', 'BE'))
+    ->run() // ValidationResult::class
+    ->getErrors(); // => ['elsterSteuernummer is not 13 digits long, and is 12 digits long']
+```
+
+### Normalization errors
+
+```php
+use Rechtlogisch\Steuernummer\Normalize;
+
+(new Normalize('123456789', 'BE'))
+    ->run() // NormalizationResult::class
+    ->getErrors(); // => ['steuernummer for BE must contain exactly 10 digits and 9 digits have been provided']
+```
+
+### Denormalization errors
+
+```php
+use Rechtlogisch\Steuernummer\Denormalize;
+
+(new Denormalize('123456789012'))
+    ->run() // ValidationResult::class
+    ->getErrors(); // => ['elsterSteuernummer is not 13 digits long, and is 12 digits long']
+```
+
+Hint: All *Result::classes extend the [ResultDto](./src/Abstracts/ResultDto.php).
 
 ### Supported tax offices
 

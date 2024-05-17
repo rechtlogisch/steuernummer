@@ -30,7 +30,7 @@ it('does not throw an exception when no federalState was provided', function () 
 })->throwsNoExceptions();
 
 it('returns false when the federal state is too short and federal state not provided', function () {
-    $result = (new Validate('1'))->run();
+    $result = (new Validate('112105678901'))->run();
     expect($result->isValid())->toBeFalse();
 });
 
@@ -41,8 +41,9 @@ it('returns false for an invalid BUFA provided in BE', function () {
 
 it('returns array as first error for an invalid BUFA provided in BE', function () {
     $result = (new Validate('1234012345678', 'BE'))->run();
-    expect($result->getFirstError())->toBeArray()
-        ->not->toBeEmpty();
+    expect($result->getFirstError())
+        ->toBeArray()
+        ->not()->toBeEmpty();
 });
 
 it('validates correctly a tax number with checksum 0 for zweierProcedure', function (string $federalState, string $steuernummer, string $elsterSteuernummer) {

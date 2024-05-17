@@ -73,6 +73,11 @@ class Normalize extends Common
         return $this->result;
     }
 
+    public function returnElsterSteuernummerOnly(): ?string
+    {
+        return $this->run()->getOutput();
+    }
+
     /**
      * @return array<int|string, string>
      */

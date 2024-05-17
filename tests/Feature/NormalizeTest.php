@@ -12,6 +12,14 @@ it('normalizes tax number', function (string $federalState, string $steuernummer
         ->and($result->getOutput())->toBe($elsterSteuernummer);
 })->with('tax-numbers');
 
+it('normalizes tax number returning only elster steuernummer', function (string $federalState, string $steuernummer, string $elsterSteuernummer) {
+    $result = (new Normalize($steuernummer, $federalState))
+        ->returnElsterSteuernummerOnly();
+
+    expect($result)->toBeString()
+        ->toBe($elsterSteuernummer);
+})->with('tax-numbers');
+
 it('normalizes edge cases from BE', function (string $federalState, string $steuernummer, string $elsterSteuernummer) {
     $result = (new Normalize($steuernummer, $federalState))
         ->run();

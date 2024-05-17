@@ -34,6 +34,9 @@ abstract class ResultDto
         return (string) array_key_first($this->errors ?? []);
     }
 
+    /**
+     * @return array<string, string>|null
+     */
     public function getFirstError(): ?array
     {
         $errors = $this->getErrors() ?? [];
@@ -43,7 +46,7 @@ abstract class ResultDto
             return null;
         }
 
-        return [$firstKey => $this->getErrors()[$firstKey]];
+        return [$firstKey => $errors[$firstKey]];
     }
 
     public function addError(string $type, string $error): void

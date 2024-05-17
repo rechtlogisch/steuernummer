@@ -5,21 +5,21 @@ declare(strict_types=1);
 use Rechtlogisch\Steuernummer;
 
 /**
- * @return string|array{
- *     steuernummer: string,
- *     federalState: string
+ * @return null|string|array{
+ *     steuernummer: string|null,
+ *     federalState: string|null
  * }
  */
-function denormalizeSteuernummer(string $elsterSteuernummer, ?string $federalState = null, bool $details = false): string|array
+function denormalizeSteuernummer(string $elsterSteuernummer, ?string $federalState = null, bool $details = false): null|string|array
 {
     return $details === true
         ? (new Steuernummer\Denormalize($elsterSteuernummer, $federalState))->returnWithFederalState()
         : (new Steuernummer\Denormalize($elsterSteuernummer, $federalState))->returnSteuernummerOnly();
 }
 
-function normalizeSteuernummer(string $elsterSteuernummer, string $federalState): Steuernummer\Dto\NormalizationResult
+function normalizeSteuernummer(string $elsterSteuernummer, string $federalState): ?string
 {
-    return (new Steuernummer\Normalize($elsterSteuernummer, $federalState))->run();
+    return (new Steuernummer\Normalize($elsterSteuernummer, $federalState))->run()->getOutput();
 }
 
 function validateElsterSteuernummer(string $elsterSteuernummer, ?string $federalState = null): Steuernummer\Dto\ValidationResult
@@ -27,7 +27,10 @@ function validateElsterSteuernummer(string $elsterSteuernummer, ?string $federal
     return (new Steuernummer\Validate($elsterSteuernummer, $federalState))->run();
 }
 
-// @TODO: isElsterSteuernummerValid(): bool
+function isElsterSteuernummerValid(string $elsterSteuernummer, ?string $federalState = null): ?bool
+{
+    return validateElsterSteuernummer($elsterSteuernummer, $federalState)->isValid();
+}
 
 function validateSteuernummer(string $steuernummer, string $federalState): Steuernummer\Dto\ValidationResult
 {
@@ -36,4 +39,7 @@ function validateSteuernummer(string $steuernummer, string $federalState): Steue
     return (new Steuernummer\Validate((string) $elsterSteuernummer->getOutput(), $federalState))->run();
 }
 
-// @TODO: isSteuernummerValid(): bool
+function isSteuernummerValid(string $steuernummer, string $federalState): ?bool
+{
+    return validateSteuernummer($steuernummer, $federalState)->isValid();
+}
