@@ -4,25 +4,44 @@ declare(strict_types=1);
 
 namespace Rechtlogisch\Steuernummer;
 
+use Rechtlogisch\Steuernummer\Dto\DenormalizationResult;
+use Throwable;
+
 class Denormalize extends Common
 {
+    private DenormalizationResult $result;
+
     protected string $elsterSteuernummer;
 
     protected string $federalState;
 
     public function __construct(string $elsterSteuernummer, ?string $federalState = null)
     {
+        $this->result = new DenormalizationResult();
+        $this->result->setInput($elsterSteuernummer);
         $this->elsterSteuernummer = $elsterSteuernummer;
-        $this->federalState = $federalState ?? $this->determineFederalState();
 
-        $this->guardFederalState();
-        $this->guardElsterSteuernummer();
+        try {
+            $this->federalState = $federalState ?? $this->determineFederalState();
+
+            $this->guardFederalState();
+            $this->result->setFederalState($this->federalState);
+            $this->guardElsterSteuernummer();
+        } catch (Throwable $exception) {
+            $this->result->setValid(false);
+            $exceptionType = get_class($exception);
+            $this->result->addError($exceptionType, $exception->getMessage());
+        }
 
         parent::__construct();
     }
 
-    private function run(): string
+    public function run(): DenormalizationResult
     {
+        if ($this->result->isValid() === false) {
+            return $this->result;
+        }
+
         $federalStateDetails = Constants::FEDERAL_STATES_DETAILS[$this->federalState];
 
         $taxOfficePrefix = $federalStateDetails['taxOfficePrefix'];
@@ -40,30 +59,37 @@ class Denormalize extends Common
 
         $taxNumberPrefix = $federalStateDetails['taxNumberPrefix'] ?? null;
 
-        return $taxNumberPrefix.
+        $this->result->setValid(true);
+        $this->result->setOutput(
+            $taxNumberPrefix.
             $taxOfficeSuffix.
             $firstSeparator.
             $district.
             $secondSeparator.
-            $uniqueAndChecksum;
+            $uniqueAndChecksum
+        );
+
+        return $this->result;
     }
 
-    public function returnSteuernummerOnly(): string
+    public function returnSteuernummerOnly(): ?string
     {
-        return $this->run();
+        return $this->run()->getOutput();
     }
 
     /**
      * @return array{
-     *     steuernummer: string,
-     *     federalState: string
+     *     steuernummer: ?string,
+     *     federalState: ?string
      * }
      */
     public function returnWithFederalState(): array
     {
+        $this->run();
+
         return [
-            'steuernummer' => $this->run(),
-            'federalState' => $this->federalState,
+            'steuernummer' => $this->result->getOutput(),
+            'federalState' => $this->result->getFederalState(),
         ];
     }
 }

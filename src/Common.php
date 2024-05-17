@@ -88,11 +88,12 @@ class Common
     public function guardBufa(): void
     {
         $bufa = (int) substr($this->elsterSteuernummer, 0, Constants::BUFA_LENGTH);
+        $federalStateProvided = isset($this->federalState);
         $federalState = $this->federalState ?? $this->determineFederalState();
         $supported = Bufas::SUPPORTED[$federalState] ?? [];
         $test = (getenv('STEUERNUMMER_PRODUCTION') === 'true') ? [] : Bufas::TEST;
         if (! in_array($bufa, array_merge($supported, $test), true)) {
-            throw new InvalidBufa("BUFA {$bufa} is not supported by ERiC");
+            throw new InvalidBufa("BUFA {$bufa} is not supported in federalState {$federalState}");
         }
     }
 

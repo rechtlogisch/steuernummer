@@ -4,22 +4,34 @@ declare(strict_types=1);
 
 namespace Rechtlogisch\Steuernummer;
 
+use Rechtlogisch\Steuernummer\Dto\NormalizationResult;
 use Rechtlogisch\Steuernummer\Exceptions\InvalidElsterSteuernummerLength;
 use Rechtlogisch\Steuernummer\Exceptions\InvalidSteuernummerLength;
+use Throwable;
 
 class Normalize extends Common
 {
+    private NormalizationResult $result;
+
     protected string $steuernummer;
 
     protected string $federalState;
 
     public function __construct(string $steuernummer, string $federalState)
     {
+        $this->result = new NormalizationResult();
+        $this->result->setInput($steuernummer);
         $this->steuernummer = (string) preg_replace('/\D/', '', $steuernummer); // Consider only digits
         $this->federalState = $federalState;
 
-        $this->guardFederalState();
-        $this->guardSteuernummer();
+        try {
+            $this->guardFederalState();
+            $this->guardSteuernummer();
+        } catch (Throwable $exception) {
+            $this->result->setValid(false);
+            $exceptionType = get_class($exception);
+            $this->result->addError($exceptionType, $exception->getMessage());
+        }
 
         parent::__construct();
     }
@@ -36,24 +48,35 @@ class Normalize extends Common
         }
     }
 
-    public function run(): string
+    public function run(): NormalizationResult
     {
+        if ($this->result->isValid() === false) {
+            return $this->result;
+        }
+
         $tokens = $this->tokenize();
         $compiled = $this->compile($tokens);
 
         $elsterSteuernummerLength = Constants::ELSTER_STEUERNUMMER_LENGTH;
+        // this shouldn't happen
+        // @codeCoverageIgnoreStart
         if (strlen($compiled) !== $elsterSteuernummerLength) {
-            // this shouldn't happen
-            throw new InvalidElsterSteuernummerLength("normalization outcome is not {$elsterSteuernummerLength} digits long"); // @codeCoverageIgnore
+            $this->result->setValid(false);
+            $exceptionType = gettype(InvalidElsterSteuernummerLength::class);
+            $this->result->addError($exceptionType, "normalization outcome is not {$elsterSteuernummerLength} digits long");
         }
+        // @codeCoverageIgnoreEnd
 
-        return $compiled;
+        $this->result->setValid(true);
+        $this->result->setOutput($compiled);
+
+        return $this->result;
     }
 
     /**
      * @return array<int|string, string>
      */
-    public function tokenize(): array
+    private function tokenize(): array
     {
         $pattern = '//';
 

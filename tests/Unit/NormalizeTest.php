@@ -2,33 +2,66 @@
 
 /** @noinspection StaticClosureCanBeUsedInspection */
 
+use Rechtlogisch\Steuernummer\Dto\NormalizationResult;
 use Rechtlogisch\Steuernummer\Exceptions;
 use Rechtlogisch\Steuernummer\Normalize;
 
+it('checks the happy path', function () {
+    $input = '2181508150';
+    $result = (new Normalize($input, 'BE'))
+        ->run();
+
+    expect($result)->toBeInstanceOf(NormalizationResult::class)
+        ->and($result->isValid())->toBeTrue()
+        ->and($result->getInput())->toBeString()->toBe($input)
+        ->and($result->getOutput())->toBeString()->toBe('1121081508150')
+        ->and($result->getErrors())->toBeEmpty();
+});
+
 it('fails when steuernummer is too short', function (string $federalState) {
-    new Normalize('123456789', $federalState);
-})->with('federal-states')->throws(Exceptions\InvalidSteuernummerLength::class);
+    $result = (new Normalize('123456789', $federalState))
+        ->run();
+
+    expect($result->isValid())->toBeFalse()
+        ->and($result->getFirstErrorKey())->toEndWith(Exceptions\InvalidSteuernummerLength::class);
+})->with('federal-states');
 
 it('fails when steuernummer is too long', function (string $federalState) {
-    new Normalize('123456789012', $federalState);
-})->with('federal-states')->throws(Exceptions\InvalidSteuernummerLength::class);
+    $result = (new Normalize('123456789012', $federalState))
+        ->run();
+
+    expect($result->isValid())->toBeFalse()
+        ->and($result->getFirstErrorKey())->toEndWith(Exceptions\InvalidSteuernummerLength::class);
+})->with('federal-states');
 
 it('fails when steuernummer is too long in federal states where a 10 digit long steuernummer is being expected', function (string $federalState) {
-    new Normalize('12345678901', $federalState);
-})->with('federal-states-steuernummer-10-digits')->throws(Exceptions\InvalidSteuernummerLength::class);
+    $result = (new Normalize('12345678901', $federalState))
+        ->run();
+
+    expect($result->isValid())->toBeFalse()
+        ->and($result->getFirstErrorKey())->toBe(Exceptions\InvalidSteuernummerLength::class);
+})->with('federal-states-steuernummer-10-digits');
 
 it('fails when steuernummer is too short in federal states where a 11 digit long steuernummer is being expected', function (string $federalState) {
-    new Normalize('1234567890', $federalState);
-})->with('federal-states-steuernummer-11-digits')->throws(Exceptions\InvalidSteuernummerLength::class);
+    $result = (new Normalize('1234567890', $federalState))
+        ->run();
+
+    expect($result->isValid())->toBeFalse()
+        ->and($result->getFirstErrorKey())->toBe(Exceptions\InvalidSteuernummerLength::class);
+})->with('federal-states-steuernummer-11-digits');
 
 it('runs with int values as steuernummer', function () {
     // PHP casts int to string due to the type hint in class constructor
     // https://www.php.net/manual/en/language.types.string.php#language.types.string.casting
+    $input = 2181508150;
     /** @phpstan-ignore-next-line */
-    $normalized = (new Normalize(2181508150, 'BE'))
+    $result = (new Normalize($input, 'BE'))
         ->run();
 
-    expect($normalized)->toBeString();
+    expect($result->isValid())->toBeTrue()
+        ->and($result->getInput())->toBeString()->toBe((string) $input)
+        ->and($result->getOutput())->toBeString()->toBe('1121081508150')
+        ->and($result->getErrors())->toBeEmpty();
 });
 
 it('fails when steuernummer is not string(able)', function () {

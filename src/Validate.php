@@ -6,10 +6,14 @@ declare(strict_types=1);
 
 namespace Rechtlogisch\Steuernummer;
 
+use Rechtlogisch\Steuernummer\Dto\ValidationResult;
 use Rechtlogisch\Steuernummer\Exceptions\InvalidBufa;
+use Throwable;
 
 class Validate extends Common
 {
+    private ValidationResult $result;
+
     protected string $elsterSteuernummer;
 
     protected string $federalState;
@@ -24,34 +28,47 @@ class Validate extends Common
 
     public function __construct(string $elsterSteuernummer, ?string $federalState = null)
     {
+        $this->result = new ValidationResult();
         $this->elsterSteuernummer = $elsterSteuernummer;
-        $this->federalState = $federalState ?? $this->determineFederalState();
 
-        $this->guardFederalState();
-        $this->guardElsterSteuernummer();
-        $this->guardBufa();
+        try {
+            $this->federalState = $federalState ?? $this->determineFederalState();
 
-        $this->setValidationDetails();
+            $this->guardFederalState();
+            $this->guardElsterSteuernummer();
+            $this->guardBufa();
+
+            $this->setValidationDetails();
+        } catch (Throwable $exception) {
+            $exceptionType = get_class($exception);
+            $this->result->setValid(false);
+            $this->result->addError($exceptionType, $exception->getMessage());
+        }
 
         parent::__construct();
     }
 
-    public function run(): bool
+    public function run(): ValidationResult
     {
+        if (! isset($this->validationProcedure)) {
+            return $this->result;
+        }
+
         $validationMethod = $this->validationProcedure.'Procedure';
 
-        return $this->$validationMethod();
+        $valid = $this->$validationMethod();
+        $this->result->setValid($valid);
+
+        return $this->result;
     }
 
     private function setValidationDetails(): void
     {
         $validationProcedure = Constants::FEDERAL_STATES_DETAILS[$this->federalState]['validationProcedure'];
         $this->validationProcedure = $validationProcedure;
-        if ($this->federalState === 'BE') {
-            $this->factors = $this->determineFactorsForBE();
-        } else {
-            $this->factors = Constants::FEDERAL_STATES_DETAILS[$this->federalState]['factors'] ?? Constants::FACTORS[$validationProcedure];
-        }
+        $this->factors = ($this->federalState === 'BE')
+            ? $this->determineFactorsForBE()
+            : Constants::FEDERAL_STATES_DETAILS[$this->federalState]['factors'] ?? Constants::FACTORS[$validationProcedure];
         $this->summands = Constants::SUMMANDS[$validationProcedure] ?? [];
     }
 

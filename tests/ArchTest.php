@@ -8,6 +8,10 @@ test('dtos are final')
     ->expect('Rechtlogisch\Steuernummer\Dto')
     ->toBeFinal();
 
+test('abstracts are abstract')
+    ->expect('Rechtlogisch\Steuernummer\Abstracts')
+    ->toBeAbstract();
+
 test('use strict mode')
     ->expect('Rechtlogisch\Steuernummer')
     ->toUseStrictTypes();

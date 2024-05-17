@@ -17,19 +17,23 @@ function denormalizeSteuernummer(string $elsterSteuernummer, ?string $federalSta
         : (new Steuernummer\Denormalize($elsterSteuernummer, $federalState))->returnSteuernummerOnly();
 }
 
-function normalizeSteuernummer(string $elsterSteuernummer, string $federalState): string
+function normalizeSteuernummer(string $elsterSteuernummer, string $federalState): Steuernummer\Dto\NormalizationResult
 {
     return (new Steuernummer\Normalize($elsterSteuernummer, $federalState))->run();
 }
 
-function validateElsterSteuernummer(string $elsterSteuernummer, ?string $federalState = null): bool
+function validateElsterSteuernummer(string $elsterSteuernummer, ?string $federalState = null): Steuernummer\Dto\ValidationResult
 {
     return (new Steuernummer\Validate($elsterSteuernummer, $federalState))->run();
 }
 
-function validateSteuernummer(string $steuernummer, string $federalState): bool
+// @TODO: isElsterSteuernummerValid(): bool
+
+function validateSteuernummer(string $steuernummer, string $federalState): Steuernummer\Dto\ValidationResult
 {
     $elsterSteuernummer = (new Steuernummer\Normalize($steuernummer, $federalState))->run();
 
-    return (new Steuernummer\Validate($elsterSteuernummer, $federalState))->run();
+    return (new Steuernummer\Validate((string) $elsterSteuernummer->getOutput(), $federalState))->run();
 }
+
+// @TODO: isSteuernummerValid(): bool
