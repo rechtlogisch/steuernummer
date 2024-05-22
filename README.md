@@ -37,7 +37,7 @@ use Rechtlogisch\Steuernummer\Normalize;
     ->returnElsterSteuernummerOnly(); // => '1121081508150'
 ```
 
-Hint: you can use `run()` instead, if you want more (error) details.
+Hint: you can use `run()` instead, if you want more details.
 
 ### Denormalize
 
@@ -54,7 +54,7 @@ use Rechtlogisch\Steuernummer\Denormalize;
     ->returnSteuernummerOnly(); // => '21/815/08150'
 ```
 
-Hint: you can use `run()` instead, if you want more (error) details.
+Hint: you can use `run()` instead, if you want more details.
 
 #### Details
 
@@ -81,7 +81,7 @@ use Rechtlogisch\Steuernummer\Denormalize;
 // ]
 ```
 
-Hint: you can use `run()` instead, if you want more (error) details.
+Hint: you can use `run()` instead, if you want more details.
 
 ### Validate
 

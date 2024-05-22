@@ -85,10 +85,9 @@ class Common
         // district 999 not allowed in all federal states
     }
 
-    public function guardBufa(): void
+    public function guardBufa(?string $input = null): void
     {
-        $bufa = (int) substr($this->elsterSteuernummer, 0, Constants::BUFA_LENGTH);
-        $federalStateProvided = isset($this->federalState);
+        $bufa = (int) substr($input ?? $this->elsterSteuernummer, 0, Constants::BUFA_LENGTH);
         $federalState = $this->federalState ?? $this->determineFederalState();
         $supported = Bufas::SUPPORTED[$federalState] ?? [];
         $test = (getenv('STEUERNUMMER_PRODUCTION') === 'true') ? [] : Bufas::TEST;

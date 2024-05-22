@@ -8,6 +8,7 @@ namespace Rechtlogisch\Steuernummer;
 
 use Rechtlogisch\Steuernummer\Dto\ValidationResult;
 use Rechtlogisch\Steuernummer\Exceptions\InvalidBufa;
+use Rechtlogisch\Steuernummer\Exceptions\InvalidElsterSteuernummerCheckDigit;
 use Throwable;
 
 class Validate extends Common
@@ -58,6 +59,11 @@ class Validate extends Common
 
         $valid = $this->$validationMethod();
         $this->result->setValid($valid);
+
+        if ($valid === false) {
+            $exceptionType = InvalidElsterSteuernummerCheckDigit::class;
+            $this->result->addError($exceptionType, 'Check digit wrong.');
+        }
 
         return $this->result;
     }

@@ -67,6 +67,16 @@ class Normalize extends Common
         }
         // @codeCoverageIgnoreEnd
 
+        try {
+            $this->guardBufa($compiled);
+        } catch (Throwable $exception) {
+            $this->result->setValid(false);
+            $exceptionType = get_class($exception);
+            $this->result->addError($exceptionType, $exception->getMessage());
+
+            return $this->result;
+        }
+
         $this->result->setValid(true);
         $this->result->setOutput($compiled);
 

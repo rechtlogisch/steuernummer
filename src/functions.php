@@ -36,6 +36,19 @@ function validateSteuernummer(string $steuernummer, string $federalState): Steue
 {
     $elsterSteuernummer = (new Steuernummer\Normalize($steuernummer, $federalState))->run();
 
+    if ($elsterSteuernummer->isValid() !== true) {
+        $validationResult = (new Steuernummer\Dto\ValidationResult);
+        $validationResult->setValid(false);
+        $errors = $elsterSteuernummer->getErrors() ?? [];
+        if (! empty($errors)) {
+            foreach ($errors as $type => $error) {
+                $validationResult->addError($type, $error);
+            }
+        }
+
+        return $validationResult;
+    }
+
     return (new Steuernummer\Validate((string) $elsterSteuernummer->getOutput(), $federalState))->run();
 }
 

@@ -27,6 +27,7 @@ class Denormalize extends Common
             $this->guardFederalState();
             $this->result->setFederalState($this->federalState);
             $this->guardElsterSteuernummer();
+            $this->guardBufa();
         } catch (Throwable $exception) {
             $this->result->setValid(false);
             $exceptionType = get_class($exception);
