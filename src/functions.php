@@ -17,9 +17,9 @@ function denormalizeSteuernummer(string $elsterSteuernummer, ?string $federalSta
         : (new Steuernummer\Denormalize($elsterSteuernummer, $federalState))->returnSteuernummerOnly();
 }
 
-function normalizeSteuernummer(string $elsterSteuernummer, string $federalState): ?string
+function normalizeSteuernummer(string $steuernummer, string $federalState): ?string
 {
-    return (new Steuernummer\Normalize($elsterSteuernummer, $federalState))->run()->getOutput();
+    return (new Steuernummer\Normalize($steuernummer, $federalState))->run()->getOutput();
 }
 
 function validateElsterSteuernummer(string $elsterSteuernummer, ?string $federalState = null): Steuernummer\Dto\ValidationResult

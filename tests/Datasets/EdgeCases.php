@@ -82,3 +82,8 @@ dataset('tax-numbers-edge-cases-be-invalid', [
     // checksum = 10
     ['BE', '18/101/08150', '1118010108150'],
 ]);
+
+dataset('tax-numbers-edge-cases-nw', [
+    ['NW', '400/9981/2342', '5400099812342'],
+    ['NW', '400/9991/2347', '5400099912347'],
+]);

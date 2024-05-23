@@ -97,6 +97,8 @@ or by providing the so called [Bescheidformat](https://www.elster.de/eportal/hel
 isSteuernummerValid('21/815/08150', 'BE'); // => true
 ```
 
+Hint: Notice, that there are two functions `isElsterSteuernummerValid()` and `isSteuernummerValid()` depending on the format of your input.
+
 #### Alternative
 
 ```php
