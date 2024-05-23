@@ -58,7 +58,7 @@ Hint: you can use `run()` instead, if you want more details.
 
 #### Details
 
-You can additionally control the result with setting `details: true`. When set `true` information which federal state the Steuernummer origins from is being added to result.
+You can additionally control the result with setting `returnWithFederalState: true`. When set `true` information which federal state the Steuernummer origins from is being added to result.
 
 ```php
 denormalizeSteuernummer('1121081508150', returnWithFederalState: true);
@@ -130,7 +130,11 @@ use Rechtlogisch\Steuernummer\Validate;
 
 (new Validate('123456789012', 'BE'))
     ->run() // ValidationResult::class
-    ->getErrors(); // => ['Rechtlogisch\Steuernummer\Exceptions\InvalidElsterSteuernummerLength' => 'elsterSteuernummer is not 13 digits long, and is 12 digits long']
+    ->getErrors();
+// [
+//   'Rechtlogisch\Steuernummer\Exceptions\InvalidElsterSteuernummerLength'
+//    => 'elsterSteuernummer is not 13 digits long, and is 12 digits long'
+// ]
 ```
 
 ### Normalization errors
@@ -140,7 +144,11 @@ use Rechtlogisch\Steuernummer\Normalize;
 
 (new Normalize('123456789', 'BE'))
     ->run() // NormalizationResult::class
-    ->getErrors(); // => ['Rechtlogisch\Steuernummer\Exceptions\InvalidSteuernummerLength' => 'steuernummer for BE must contain exactly 10 digits, and 9 digits have been provided']
+    ->getErrors();
+// [
+//   'Rechtlogisch\Steuernummer\Exceptions\InvalidSteuernummerLength'
+//    => 'steuernummer for BE must contain exactly 10 digits, and 9 digits have been provided'
+// ]
 ```
 
 ### Denormalization errors
@@ -150,10 +158,14 @@ use Rechtlogisch\Steuernummer\Denormalize;
 
 (new Denormalize('123456789012'))
     ->run() // DenormalizationResult::class
-    ->getErrors(); // => ['Rechtlogisch\Steuernummer\Exceptions\InvalidElsterSteuernummerLength' => 'elsterSteuernummer is not 13 digits long, and is 12 digits long']
+    ->getErrors();
+// [
+//   'Rechtlogisch\Steuernummer\Exceptions\InvalidElsterSteuernummerLength'
+//    => 'elsterSteuernummer is not 13 digits long, and is 12 digits long'
+// ]
 ```
 
-Hint: All *Result::classes extend the [ResultDto](./src/Abstracts/ResultDto.php).
+Hint: All `*Result::class` extend the [ResultDto](./src/Abstracts/ResultDto.php).
 
 ### Supported tax offices
 
