@@ -1,4 +1,4 @@
-![Recht logisch Steuer-ID banner image](rechtlogisch-steuernummer-banner.png)
+![Recht logisch Steuernummer banner image](rechtlogisch-steuernummer-banner.png)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/rechtlogisch/steuernummer.svg?style=flat-square)](https://packagist.org/packages/rechtlogisch/steuernummer)
 [![Tests](https://github.com/rechtlogisch/steuernummer/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/rechtlogisch/steuernummer/actions/workflows/run-tests.yml)
@@ -61,7 +61,7 @@ Hint: you can use `run()` instead, if you want more details.
 You can additionally control the result with setting `details: true`. When set `true` information which federal state the Steuernummer origins from is being added to result.
 
 ```php
-denormalizeSteuernummer('1121081508150', details: true);
+denormalizeSteuernummer('1121081508150', returnWithFederalState: true);
 // [
 //   'steuernummer' => '21/815/08150',
 //   'federalState' => 'BE',
@@ -81,7 +81,7 @@ use Rechtlogisch\Steuernummer\Denormalize;
 // ]
 ```
 
-Hint: you can use `run()` instead, if you want more details.
+Hint: you can use `run()` instead, if you want even more details.
 
 ### Validate
 
@@ -119,15 +119,18 @@ use Rechtlogisch\Steuernummer\Validate;
 
 ## Errors
 
-You can get a list of errors explaining why the provided input is invalid. The `run()` method on each class returns a DTO with a `getErrors()` method:
+You can get a list of errors explaining why the provided input is invalid. The `run()` method on each class returns a DTO with a `getErrors()` method.
+
+Hint: The keys of `getErrors()` hold the stringified reference to the exception class. You can check for a particular error by comparing to the `::class` constant. For example: `Rechtlogisch\Steuernummer\Exceptions\InvalidElsterSteuernummerLength::class`.
 
 ### Validation errors
+
 ```php
 use Rechtlogisch\Steuernummer\Validate;
 
-(new Validate('123456789', 'BE'))
+(new Validate('123456789012', 'BE'))
     ->run() // ValidationResult::class
-    ->getErrors(); // => ['elsterSteuernummer is not 13 digits long, and is 12 digits long']
+    ->getErrors(); // => ['Rechtlogisch\Steuernummer\Exceptions\InvalidElsterSteuernummerLength' => 'elsterSteuernummer is not 13 digits long, and is 12 digits long']
 ```
 
 ### Normalization errors
@@ -137,7 +140,7 @@ use Rechtlogisch\Steuernummer\Normalize;
 
 (new Normalize('123456789', 'BE'))
     ->run() // NormalizationResult::class
-    ->getErrors(); // => ['steuernummer for BE must contain exactly 10 digits and 9 digits have been provided']
+    ->getErrors(); // => ['Rechtlogisch\Steuernummer\Exceptions\InvalidSteuernummerLength' => 'steuernummer for BE must contain exactly 10 digits, and 9 digits have been provided']
 ```
 
 ### Denormalization errors
@@ -146,8 +149,8 @@ use Rechtlogisch\Steuernummer\Normalize;
 use Rechtlogisch\Steuernummer\Denormalize;
 
 (new Denormalize('123456789012'))
-    ->run() // ValidationResult::class
-    ->getErrors(); // => ['elsterSteuernummer is not 13 digits long, and is 12 digits long']
+    ->run() // DenormalizationResult::class
+    ->getErrors(); // => ['Rechtlogisch\Steuernummer\Exceptions\InvalidElsterSteuernummerLength' => 'elsterSteuernummer is not 13 digits long, and is 12 digits long']
 ```
 
 Hint: All *Result::classes extend the [ResultDto](./src/Abstracts/ResultDto.php).

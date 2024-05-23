@@ -44,7 +44,7 @@ class Normalize extends Common
         $actualLength = strlen($this->steuernummer);
 
         if ($expectedLength !== $actualLength) {
-            throw new InvalidSteuernummerLength("steuernummer for {$this->federalState} must contain exactly {$expectedLength} digits and {$actualLength} digits have been provided");
+            throw new InvalidSteuernummerLength("steuernummer for {$this->federalState} must contain exactly {$expectedLength} digits, and {$actualLength} digits have been provided");
         }
     }
 

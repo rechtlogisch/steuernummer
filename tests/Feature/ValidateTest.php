@@ -34,14 +34,14 @@ it('validates edge cases from BE', function (string $federalState, string $steue
     expect($result->isValid())->toBeTrue();
 })->with('tax-numbers-edge-cases-be-valid');
 
-it('return false for invalid elsterSteuernummer', function (string $federalState, string $steuernummer, string $elsterSteuernummer, string $reason = 'Test') {
+it('return false for invalid elsterSteuernummer', function (string $federalState, string $steuernummer, string $elsterSteuernummer) {
     $result = (new Validate($elsterSteuernummer, $federalState))
         ->run();
 
     expect($result->isValid())->toBeFalse();
 })->with('tax-numbers-invalid');
 
-it('return false for elsterSteuernummer edge cases from BE', function (string $federalState, string $steuernummer, string $elsterSteuernummer, string $reason = 'Test') {
+it('return false for elsterSteuernummer edge cases from BE', function (string $federalState, string $steuernummer, string $elsterSteuernummer) {
     $result = (new Validate($elsterSteuernummer, $federalState))
         ->run();
 

@@ -26,7 +26,7 @@ it('denormalizes an elster-steuernummer with the global denormalizeSteuernummer(
 
 it('denormalizes an elster-steuernummer with the global denormalizeSteuernummer() function and returns details', function () {
     /** @var array{steuernummer: string, federalState: string} $result */
-    $result = denormalizeSteuernummer('1121081508150', details: true);
+    $result = denormalizeSteuernummer('1121081508150', returnWithFederalState: true);
     expect($result)
         ->toBeArray()
         ->and($result['steuernummer'])->toBe('21/815/08150')

@@ -10,9 +10,9 @@ use Rechtlogisch\Steuernummer;
  *     federalState: string|null
  * }
  */
-function denormalizeSteuernummer(string $elsterSteuernummer, ?string $federalState = null, bool $details = false): null|string|array
+function denormalizeSteuernummer(string $elsterSteuernummer, ?string $federalState = null, bool $returnWithFederalState = false): null|string|array
 {
-    return $details === true
+    return $returnWithFederalState === true
         ? (new Steuernummer\Denormalize($elsterSteuernummer, $federalState))->returnWithFederalState()
         : (new Steuernummer\Denormalize($elsterSteuernummer, $federalState))->returnSteuernummerOnly();
 }
