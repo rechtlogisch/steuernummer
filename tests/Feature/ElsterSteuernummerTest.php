@@ -6,7 +6,7 @@ use Rechtlogisch\Steuernummer\Exceptions;
 use Rechtlogisch\Steuernummer\Validate;
 
 it('exports elsterSteuernummer from datasets', function (string $federalState, string $steuernummer, string $elsterSteuernummer) {
-    $result = file_put_contents('tests/Datasets/input.txt', $elsterSteuernummer.PHP_EOL, FILE_APPEND);
+    $result = file_put_contents('tests/Datasets/input-test.txt', $elsterSteuernummer.PHP_EOL, FILE_APPEND);
     expect($result)
         ->toBeInt();
 })->group('manual')
@@ -33,21 +33,23 @@ it('generates a csv for comparison with eric result', function () {
             continue;
         }
 
-        try {
-            $resultValidation = (new Validate($elsterSteuernummer))
-                ->run();
-            $code = ($resultValidation->isValid() === true)
-                ? '0'
-                : '610001034';
-        } catch (Exceptions\FederalStateCouldNotBeDetermined|Exceptions\InvalidElsterSteuernummerLength) {
-            $resultValidation = false;
-            $code = '610001035';
-        } catch (Exceptions\InvalidBufa) {
-            $resultValidation = false;
-            $code = '610001038';
-        }
+        $resultValidation = (new Validate($elsterSteuernummer))
+            ->run();
 
-        $textResultValidation = ($resultValidation) ? 'valid' : 'invalid';
+        $codeMap = [
+            Exceptions\InvalidElsterSteuernummerCheckDigit::class => '610001034',
+            Exceptions\FederalStateCouldNotBeDetermined::class => '610001035',
+            Exceptions\InvalidElsterSteuernummerLength::class => '610001035',
+            Exceptions\InvalidBufa::class => '610001038',
+        ];
+
+        $code = ($resultValidation->isValid() === true)
+            ? '0'
+            : $codeMap[$resultValidation->getFirstErrorKey()];
+
+        $textResultValidation = ($resultValidation->isValid() === true)
+            ? 'valid'
+            : 'invalid';
 
         $text = "{$elsterSteuernummer},{$textResultValidation},{$code}".PHP_EOL;
 
@@ -58,5 +60,4 @@ it('generates a csv for comparison with eric result', function () {
 
     expect($resultSaving)
         ->toBeInt();
-})->group('manual')
-    ->skip('only for manual quality and performance testing');
+})->group('manual');
