@@ -7,6 +7,9 @@ namespace Rechtlogisch\Steuernummer;
 class Bufas
 {
     // list of tax offices supported in ERiC 41.2.6
+    /**
+     * @var array<string, int[]>
+     */
     public const SUPPORTED = [
         'BB' => [
             3046,
@@ -603,6 +606,9 @@ class Bufas
         ],
     ];
 
+    /**
+     * @var int[]
+     */
     public const TEST = [
         1096,
         1097,

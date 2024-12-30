@@ -1,5 +1,7 @@
 includes:
 	- phpstan-baseline.neon
+	- phar://phpstan.phar/conf/bleedingEdge.neon
+	- vendor/phpstan/phpstan-deprecation-rules/rules.neon
 
 parameters:
 	level: 9

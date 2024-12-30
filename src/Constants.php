@@ -304,7 +304,6 @@ class Constants
      */
     public static function federalStatesNames(): array
     {
-        /** @var $item */
         return array_map(static fn (array $item) => $item['name'], self::FEDERAL_STATES_DETAILS);
     }
 

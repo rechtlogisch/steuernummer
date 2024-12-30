@@ -114,7 +114,8 @@ class Common
         }
 
         $bufasTest = (getenv('STEUERNUMMER_PRODUCTION') === 'true') ? [] : Bufas::TEST;
-        $bufasSupported = array_merge($bufasTest, ...array_values(Bufas::SUPPORTED));
+        // array_values returns an array with int key index, which causes a PHPStan warning
+        $bufasSupported = array_merge($bufasTest, ...array_values(Bufas::SUPPORTED)); // @phpstan-ignore-line
         if (! in_array($bufa, $bufasSupported, true)) {
             throw new InvalidBufa("BUFA {$bufa} is not supported by ERiC");
         }
