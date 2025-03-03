@@ -44,8 +44,8 @@
     },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse",
-        "arch": "vendor/bin/pest --group=arch",
-        "coverage": "vendor/bin/pest --coverage --min=98",
+        "arch": "vendor/bin/pest --group=arch --no-coverage",
+        "coverage": "XDEBUG_MODE=coverage vendor/bin/pest --coverage --min=98",
         "format": "vendor/bin/pint",
         "quality": [
             "@arch",
@@ -55,7 +55,7 @@
             "@types",
             "@coverage"
         ],
-        "test": "vendor/bin/pest --exclude-group=manual --exclude-group=arch",
+        "test": "vendor/bin/pest --exclude-group=manual --exclude-group=arch --no-coverage",
         "types": "vendor/bin/pest --type-coverage --min=100"
     },
     "config": {
