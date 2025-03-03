@@ -204,6 +204,7 @@ class Constants
         1135 => 'B',
         1136 => 'B',
         1137 => 'B',
+        1138 => 'B',
         // Following BUFAs are designated only for testing purposes
         1194 => 'B',
         1195 => 'B',

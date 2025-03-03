@@ -10,7 +10,7 @@
 
 Formats bidirectionally German tax numbers originating from tax office letters (German: Bescheidformat) or the ELSTER-Format (German: bundeseinheitliches ELSTER-Steuernummerformat) and validates it.
 
-Based on the [official ELSTER documentation](https://download.elster.de/download/schnittstellen/Pruefung_der_Steuer_und_Steueridentifikatsnummer.pdf) (chapters: 3 - 7; as of 2024-11-07). Inspired by [kontist/normalize-steuernummer](https://github.com/kontist/normalize-steuernummer) and [kontist/denormalize-steuernummer](https://github.com/kontist/denormalize-steuernummer).
+Based on the [official ELSTER documentation](https://download.elster.de/download/schnittstellen/Pruefung_der_Steuer_und_Steueridentifikatsnummer.pdf) (chapters: 3 - 7; as of 2025-02-24). Inspired by [kontist/normalize-steuernummer](https://github.com/kontist/normalize-steuernummer) and [kontist/denormalize-steuernummer](https://github.com/kontist/denormalize-steuernummer).
 
 > [!NOTE]
 > This package validates solely the syntax and check digit of the provided input. It does not confirm, that the provided Steuernummer was assigned to any entity. Please contact the responsible tax office in case of any doubts concerning the correctness of your Steuernummer.

@@ -49,6 +49,7 @@ class Bufas
             1135,
             1136,
             1137,
+            1138, // may be used by the end March 2025 on elster.de, and with the next ERiC release (planned for Mai 5th, 2025) cf. https://forum.elster.de/herstellerforum/forum/archiv/elsternewsletter/157669-24-02-2025-aktualisierung-steuernummer-und-identifikationsnummernpr%C3%BCfung @TODO: remove after next ERiC release
         ],
         'BW' => [
             2801,
