@@ -179,7 +179,7 @@ use Rechtlogisch\Steuernummer\Denormalize;
 
 ### Supported tax offices
 
-By default, tax office codes (German: Bundesfinanzamtsnummer - short BUFA) included in the [ELSTER ERiC libraries](https://www.elster.de/elsterweb/infoseite/entwickler) are supported by this package. Currently, based on ERiC 41.2.6. You'll find the list in [src/Bufas.php](./src/Bufas.php).
+By default, tax office codes (German: Bundesfinanzamtsnummer - short BUFA) included in the [ELSTER ERiC libraries](https://www.elster.de/elsterweb/infoseite/entwickler) are supported by this package. Currently, based on ERiC 41.5.4. You'll find the list in [src/Bufas.php](./src/Bufas.php).
 
 The list includes test BUFAs, which are invalid in production. It is recommended to disable them in production with the following environment variable:
 
