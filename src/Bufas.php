@@ -6,7 +6,7 @@ namespace Rechtlogisch\Steuernummer;
 
 class Bufas
 {
-    // list of tax offices supported in ERiC 41.5.4
+    // list of tax offices supported in ERiC 44.2
     /**
      * @var array<string, int[]>
      */
@@ -247,12 +247,8 @@ class Bufas
             2609,
             2610,
             2611,
-            2612,
-            2613,
             2614,
-            2615,
             2616,
-            2617,
             2618,
             2619,
             2620,
@@ -270,7 +266,6 @@ class Bufas
             2632,
             2633,
             2634,
-            2635,
             2636,
             2637,
             2638,
@@ -278,11 +273,9 @@ class Bufas
             2640,
             2641,
             2642,
-            2643,
             2644,
             2645,
             2646,
-            2647,
         ],
         'HH' => [
             2210,
@@ -290,6 +283,7 @@ class Bufas
             2217,
             2220,
             2227,
+            2228,
             2235,
             2241,
             2242,
@@ -334,7 +328,6 @@ class Bufas
             2327,
             2328,
             2330,
-            2331,
             2333,
             2334,
             2335,
@@ -368,6 +361,10 @@ class Bufas
             2368,
             2369,
             2370,
+            2390,
+            2391,
+            2392,
+            2393,
         ],
         'NW' => [
             5101,
@@ -474,7 +471,7 @@ class Bufas
             5350,
             5351,
             5359,
-            // 5380, // not yet supported, cf. entry on 01.03.2024 in changelog of official ELSTER documentation
+            5380,
         ],
         'RP' => [
             2701,
@@ -518,6 +515,7 @@ class Bufas
             2129,
             2130,
             2131,
+            2137,
             2171,
             2172,
             2173,

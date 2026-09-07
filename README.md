@@ -10,7 +10,7 @@
 
 Formats bidirectionally German tax numbers originating from tax office letters (German: Bescheidformat) or the ELSTER-Format (German: bundeseinheitliches ELSTER-Steuernummerformat) and validates it.
 
-Based on the [official ELSTER documentation](https://download.elster.de/download/schnittstellen/Pruefung_der_Steuer_und_Steueridentifikatsnummer.pdf) (chapters: 3 - 7; as of 2025-02-24). Inspired by [kontist/normalize-steuernummer](https://github.com/kontist/normalize-steuernummer) and [kontist/denormalize-steuernummer](https://github.com/kontist/denormalize-steuernummer).
+Based on the [official ELSTER documentation](https://download.elster.de/download/schnittstellen/Pruefung_der_Steuer_und_Steueridentifikatsnummer.pdf) (chapters: 3 - 7; as of 2026-09-02). Inspired by [kontist/normalize-steuernummer](https://github.com/kontist/normalize-steuernummer) and [kontist/denormalize-steuernummer](https://github.com/kontist/denormalize-steuernummer).
 
 > [!NOTE]
 > This package validates solely the syntax and check digit of the provided input. It does not confirm, that the provided Steuernummer was assigned to any entity. Please contact the responsible tax office in case of any doubts concerning the correctness of your Steuernummer.
@@ -179,7 +179,7 @@ use Rechtlogisch\Steuernummer\Denormalize;
 
 ### Supported tax offices
 
-By default, tax office codes (German: Bundesfinanzamtsnummer - short BUFA) included in the [ELSTER ERiC libraries](https://www.elster.de/elsterweb/infoseite/entwickler) are supported by this package. Currently, based on ERiC 41.5.4. You'll find the list in [src/Bufas.php](./src/Bufas.php).
+By default, tax office codes (German: Bundesfinanzamtsnummer - short BUFA) included in the [ELSTER ERiC libraries](https://www.elster.de/elsterweb/infoseite/entwickler) are supported by this package. Currently, based on ERiC 44.2. You'll find the list in [src/Bufas.php](./src/Bufas.php).
 
 The list includes test BUFAs, which are invalid in production. It is recommended to disable them in production with the following environment variable:
 
